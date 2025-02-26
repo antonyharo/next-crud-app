@@ -1,5 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Banco de dados SQLite
+*.db
+*.db-journal
+
+# Migrations e Prisma cache
+prisma/migrations/
+
 # dependencies
 /node_modules
 /.pnp
