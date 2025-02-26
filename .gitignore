@@ -1,8 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Banco de dados SQLite
-*.db
-*.db-journal
 
 # Migrations e Prisma cache
 prisma/migrations/
@@ -46,3 +43,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Banco de dados SQLite
+*.db
+*.db-journal
