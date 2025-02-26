@@ -289,9 +289,9 @@ export default function Home() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Name</TableHead>
+                            <TableHead>Title</TableHead>
                             <TableHead>Description</TableHead>
-                            <TableHead className="text-center">
+                            <TableHead className="text-right">
                                 Actions
                             </TableHead>
                         </TableRow>
@@ -308,7 +308,7 @@ export default function Home() {
                             >
                                 <TableCell>{task.title}</TableCell>
                                 <TableCell>{task.description}</TableCell>
-                                <TableCell className="flex gap-1 flex-wrap justify-center">
+                                <TableCell className="flex gap-1 flex-wrap justify-end items-center">
                                     <Button
                                         className="p-3"
                                         onClick={() =>
