@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAuth } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +27,6 @@ import {
 import { Trash2, Check, Pencil, Plus } from "lucide-react";
 
 export default function Home() {
-    const { isLoaded, userId, getToken } = useAuth();
     const [tasks, setTasks] = useState([]);
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -46,18 +44,9 @@ export default function Home() {
 
     const loadTasks = async () => {
         try {
-            const token = await getToken({ template: "supabase" });
-            console.log(userId);
-
-            const response = await fetch("/api/read", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId, token }),
-            });
+            const response = await fetch("/api/read");
 
             const data = await response.json();
-            console.log(data);
-
             response.ok
                 ? setTasks(data)
                 : setErrorMessage(`Error: ${data.error}`);
@@ -70,14 +59,10 @@ export default function Home() {
     const onSubmit = async (data) => {
         if (errors.name || errors.description) return;
 
-        const token = await getToken({ template: "supabase" });
-
         const task = {
             ...(data.id && { id: data.id }),
             title: data.title,
             description: data.description,
-            token: token,
-            userId: userId,
         };
 
         if (editingTask) {
@@ -138,12 +123,10 @@ export default function Home() {
         task.completed = true;
 
         try {
-            const token = await getToken({ template: "supabase" });
-
             const response = await fetch("/api/update", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ...task, token, userId }),
+                body: JSON.stringify(task),
             });
 
             const data = await response.json();
@@ -168,11 +151,10 @@ export default function Home() {
     // Deletar uma tarefa
     const handleDeleteTask = async (id) => {
         try {
-            const token = await getToken({ template: "supabase" });
             const response = await fetch("/api/delete", {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id, token, userId }),
+                body: JSON.stringify({ id }),
             });
 
             const data = await response.json();
@@ -202,10 +184,8 @@ export default function Home() {
     };
 
     useEffect(() => {
-        if (isLoaded && userId) {
-            loadTasks();
-        }
-    }, [isLoaded]);
+        loadTasks();
+    }, []);
 
     return (
         <div className="p-6 mx-auto space-y-4 flex flex-col items-center justify-center min-h-screen">

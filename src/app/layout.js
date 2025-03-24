@@ -12,11 +12,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-    title: "TalentAI",
-    description: "Plataforma de Recolocação Profissional",
-    icons: {
-        icon: "/favicon.svg", // Caminho do favicon
-    },
+    title: "Supabase CRUD",
+    description: "Supabase CRUD",
 };
 
 export default function RootLayout({ children }) {

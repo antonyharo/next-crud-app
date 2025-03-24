@@ -1,14 +1,29 @@
 import { NextResponse } from "next/server";
 import { supabaseClient } from "@/lib/supabase";
+import { auth } from "@clerk/nextjs/server";
 
 export async function POST(req) {
     try {
-        const { title, description, userId, token } = await req.json();
+        const { title, description } = await req.json();
+        const { userId, getToken } = await auth(req);
 
-        // Criar um cliente do Supabase autenticado com o token do usuário
+        if (!userId) {
+            return NextResponse.json(
+                { error: "Usuário não autenticado" },
+                { status: 401 }
+            );
+        }
+
+        if (!title || !description) {
+            return NextResponse.json(
+                { error: "Título e descrição são obrigatórios" },
+                { status: 400 }
+            );
+        }
+
+        const token = await getToken({ template: "supabase" });
         const supabase = supabaseClient(token);
 
-        // Inserir a nova tarefa no banco de dados
         const { data, error } = await supabase
             .from("tasks")
             .insert([{ title, description, user_id: userId }])
@@ -16,13 +31,16 @@ export async function POST(req) {
             .single();
 
         if (error) {
-            throw new Error(error.message);
+            return NextResponse.json(
+                { error: `Erro ao criar tarefa: ${error.message}` },
+                { status: 400 }
+            );
         }
 
         return NextResponse.json(data, { status: 201 });
     } catch (error) {
         return NextResponse.json(
-            { error: error.message || "Erro ao criar tarefa" },
+            { error: "Erro ao processar requisição" },
             { status: 500 }
         );
     }

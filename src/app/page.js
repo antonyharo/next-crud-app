@@ -17,7 +17,7 @@ export default function Page() {
 
     return (
         <main className="min-h-screen mx-auto flex flex-col items-center justify-center gap-6">
-            <h1 className="text-3xl font-bold mb-1">Supabase CRUD</h1>
+            <h1 className="text-3xl font-bold mb-1">Supabase Tests</h1>
             <SignedOut>
                 <div className="flex gap-4">
                     <Button onClick={openSignIn}>Sign in</Button>
@@ -27,13 +27,24 @@ export default function Page() {
                 </div>
             </SignedOut>
             <SignedIn>
-                <div className="flex gap-4 items-center">
+                <div className="grid gap-4 place-items-center">
                     <UserButton />
                     <Link
-                        href="/dashboard"
+                        href="/dashboard/crud"
                         className="group flex items-center justify-center gap-3 font-medium text-zinc-600 "
                     >
-                        Dashboard
+                        CRUD
+                        <ArrowRight
+                            size={15}
+                            strokeWidth={3.5}
+                            className="transition group-hover:translate-x-1.5"
+                        />
+                    </Link>
+                    <Link
+                        href="/dashboard/upload"
+                        className="group flex items-center justify-center gap-3 font-medium text-zinc-600 "
+                    >
+                        Upload a file
                         <ArrowRight
                             size={15}
                             strokeWidth={3.5}
